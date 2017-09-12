@@ -72,8 +72,10 @@ public class WebhooksController {
 			return new ResponseEntity<>(new ResponseWrapper(ERROR), HttpStatus.FORBIDDEN);
 		}
 		
-		LOG.info("response sent ");
-    	return new ResponseEntity<>(new ResponseWrapper(SUCCESS), HttpStatus.OK);
+    	ResponseEntity<ResponseWrapper> result =  
+    			new ResponseEntity<>(new ResponseWrapper(SUCCESS), HttpStatus.OK);
+		LOG.info("response sent: "+result);
+    	return result;
     }
 
 }

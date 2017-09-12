@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.intuit.developer.sampleapp.webhooks.domain.CompanyConfig;
 import com.intuit.ipp.services.DataService;
+import com.intuit.ipp.services.QueryResult;
 import com.intuit.ipp.util.Logger;
 
 /**
@@ -19,6 +20,8 @@ import com.intuit.ipp.util.Logger;
 @Service(value="QueryAPI")
 public class QueryService implements QBODataService {
 	
+	private static final String TAG = QueryService.class.getSimpleName();
+
 	private static final org.slf4j.Logger LOG = Logger.getLogger();
 	
 	@Autowired
@@ -29,16 +32,18 @@ public class QueryService implements QBODataService {
 		
 		// create data service
 		DataService service = dataServiceFactory.getDataService(companyConfig);
-			
+
+		String query = "select * from ";
 		try {
-			LOG.info("Calling Query API ");
-			String query = "select * from ";
-			//Build query list for each subscribed entities
+			LOG.info(TAG + "Calling Query API ");
+			// Build query list for each subscribed entities
 			List<String> subscribedEntities = Arrays.asList(companyConfig.getWebhooksSubscribedEntites().split(","));
-			subscribedEntities.forEach(entity -> executeQuery(query + entity, service)) ;
-			
+			for (String entity : subscribedEntities) {
+				executeQuery(query + entity, service);
+				LOG.info(TAG + ".callDataService - query:" + query + ", e:" + entity);
+			}
 		} catch (Exception ex) {
-			LOG.error("Error loading app configs" , ex.getCause());
+			LOG.error(TAG + "Error loading app configs, query:" + query + " cause:" + ex.getCause(), ex.getCause());
 		}
 		
 	}
@@ -50,12 +55,13 @@ public class QueryService implements QBODataService {
 	 * @param service
 	 */
 	public void executeQuery(String query, DataService service) {
+		QueryResult result = null;
 		try {
 			LOG.info("Executing Query " + query);
-			service.executeQuery(query);
-			LOG.info(" Query complete" );
+			result = service.executeQuery(query);
+			LOG.info(" Query complete, result:" + result + " query:" + query);
 		} catch (Exception ex) {
-			LOG.error("Error loading app configs" , ex.getCause());
+			LOG.error(".executeQuery - Error loading app configs, q:" + query + " result:" + result, ex.getCause());
 		}
 	}
 

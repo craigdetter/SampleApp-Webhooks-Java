@@ -34,7 +34,8 @@ public class CompanyConfigServiceImpl implements CompanyConfigService {
 			companyConfigs.forEach(config -> config.setAccessToken(decrypt(config.getAccessToken())));
 			companyConfigs.forEach(config -> config.setAccessTokenSecret(decrypt(config.getAccessTokenSecret())));
 		} catch (Exception ex) {
-			LOG.error("Error loading company configs" , ex.getCause());
+			LOG.error("Error loading company configs()",
+					ex.getCause() + "\n stkTrace:" + ex.getStackTrace());
 		}
 		return companyConfigs;
 	}

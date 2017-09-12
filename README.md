@@ -19,7 +19,9 @@ SampleApp-Webhooks-Java
 ## Table of Contents
 
 * [Requirements](#requirements)
-* [First Use Instructions](#first-use-instructions)
+* [Eclipse Users](#eclipse-users)
+* [Clone the GitHub Repo](#clone-the-github-repo)
+* [Edit the Configuration File](#edit-the-configuration-file)
 * [Running the code](#running-the-code)
 * [Configuring the endpoint](#configuring-the-endpoint)
 * [Project Structure](#project-structure)
@@ -35,24 +37,35 @@ In order to successfully run this sample app you need a few things:
 3. An app on [developer.intuit.com](http://developer.intuit.com) and the associated app token, consumer key, and consumer secret.
 4. QuickBooks Java SDK (already included in the [`lib`](lib) folder) 
 5. Two sandbox companies, connect both companies with your app and generate the oauth tokens.
- 
-## First Use Instructions
 
-1. Clone the GitHub repo to your computer
-2. In [`config.properties`](src/main/resources/config.properties), set oauth.type as 1 or 2 depending on type of app you have. For OAuth2 apps set value as 2.
-3. For OAuth2 apps, fill in the [`config.properties`](src/main/resources/config.properties) file values (companyid, oauth2.accessToken).
-4. For OAuth1 apps, fill in the [`config.properties`](src/main/resources/config.properties) file values (companyid, app token, consumer key, consumer secret, access token key, access token secret). 
-5. Also add webhooks subscribed entities and webhooks verifier token that was generated when you subscribed for webhoooks event.
+## Eclipse Users
+
+If you're preferred IDE is Eclipse:  
+1. [Download Eclipse](https://www.eclipse.org/downloads/), install.  
+2. [Add Gradle plugin to Eclipse](https://github.com/spring-projects/eclipse-integration-gradle/blob/master/README.md)  
+3. Clone the GitHub repo to your computer 
+4. File / Import / Gradle SDS / open cloned code
+
+## Clone the GitHub repo
+If using Git, clone the GitHub repo to your computer:   
+   git clone https://github.com/IntuitDeveloper/SampleApp-Webhooks-Java.git 
+ 
+## Edit the Configuration File
+Open the [`application.properties`](src/main/resources/application.properties) file
+1.  All new apps use OAuth2. Set oauth.type as either 1 or 2 depending on type of app. 
+2. For OAuth2 apps, fill in **(companyid, oauth2.accessToken)**.
+3. For OAuth1 apps, fill in **(companyid, app token, consumer key, consumer secret, access token key, access token secret)**. 
+4. Add webhooks subscribed entities and webhooks verifier token that was generated when you subscribed for webhoooks event.  
 
 ## Running the code
 
 Once the sample app code is on your computer, you can do the following steps to run the app:
 
-1. cd to the project directory</li>
+1. Open a command prompt window. Change directory (cd) to the project directory</li>
 2. Run the command:`./gradlew bootRun` (Mac OS) or `gradlew.bat bootRun` (Windows)</li>
 3. Wait until the terminal output displays the "Started Application in xxx seconds" message.
-4. Open your browser and go to http://localhost:8080/companyConfigs - This will list the companies in the repository for which you have subscribed event notification.
-5. The webhooks endpoint in the sample app is http://localhost:8080/webhooks
+4. Open your browser and go to: [http://localhost:8080/companyConfigs](http://localhost:8080/companyConfigs) - This will list the companies in the repository for which you have subscribed event notification.
+5. The webhooks endpoint in the sample app is [http://localhost:8080/webhooks](http://localhost:8080/webhooks)
 6. Once an event notification is received and processed, you can perform step 4 to see that the last updated timestamp has been updated for the realmId for which notification was received.
 7. To run the code on a different port, uncomment and update server.port property in application.properties
 
@@ -62,11 +75,13 @@ Webhooks requires your enpoint to be exposed over the internet. The easiest way 
 
 1. Download and install ngrok
 2. Expose your localhost by running "./ngrok http 8080" on the command line. 
-3. You will then get a forwarding url that looks something like this:
+3. You will then get a forwarding url that looks something like this:  
     Forwarding     https://cb063e9f.ngrok.io -> localhost:8080  
 (Remember to use only https url and not the http url for webhooks)
-This will expose localhost:8080 to the Internet. Your endpoint url will now be https://cb063e9f.ngrok.io/webhooks
-Copy this url and use it for setting up webhooks on developer.intuit.com for your app. 
+This will expose localhost:8080 to the Internet. Your endpoint url will now be something like:   
+**https://cb063e9f.ngrok.io/webhooks**   (don't use this literal value, rather your value from the ngrok window)  
+Note: don't forget the /webhooks suffix in the webhook field on QBO.
+Copy that ngrok url and use it for setting up webhooks on developer.intuit.com for your app. 
 
 ## Project Structure
 * **Standard Java coding structure is used for the sample app**

@@ -20,4 +20,9 @@ public class ResponseWrapper {
 		this.message = message;
 	}
 
+	@Override
+	public String toString() {
+		return "ResponseWrapper [message=" + message + "]";
+	}
+
 }
